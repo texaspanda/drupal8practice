@@ -1,0 +1,8 @@
+name: Time Watcher Module
+description: Watch generation time of page.
+package: Custom
+type: module
+core: 8.x
+library:
+  - time_watcher/slick
+  - time_watcher/test

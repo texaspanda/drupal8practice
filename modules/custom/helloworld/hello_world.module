@@ -1,0 +1,4 @@
+<?php
+    function hello_world_preprocess_page() {
+        drupal_set_message('Hello world!');
+    }

@@ -1,0 +1,5 @@
+name: 'nodes to json'
+type: module
+description: 'nodes to json (dont available for anonymous users)'
+core: 8.x
+package: 'Custom'

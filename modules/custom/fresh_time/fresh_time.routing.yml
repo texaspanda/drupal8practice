@@ -1,0 +1,22 @@
+fresh_nodes.source:
+  path: 'fresh-time'
+  defaults:
+    _controller: '\Drupal\fresh_time\Controller\GetToday::todayNodesList'
+    _title_callback: '\Drupal\fresh_time\Services\NodesList::setTitle'
+  methods: [GET]
+  requirements:
+    _custom_access: '\Drupal\fresh_time\Controller\GetToday::access'
+fresh_time.similar_content:
+  path: 'content'
+  defaults:
+    _controller: '\Drupal\fresh_time\Controller\SimilarContentController::find'
+    _title: 'Similar content'
+  requirements:
+    _permission: 'access content'
+fresh_time.comments:
+  path: 'node/{id}/comments'
+  defaults:
+    _controller: '\Drupal\fresh_time\Controller\CommentsController::commentsList'
+    _title: 'Comments'
+  requirements:
+    _permission: 'access content'

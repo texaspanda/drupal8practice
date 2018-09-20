@@ -1,0 +1,7 @@
+nodes_to_json.source:
+  path: 'nodes-to-json'
+  defaults:
+    _controller: '\Drupal\nodes_to_json\Controller\NodesToJson::generate'
+    _title: 'Nodes in Json'
+  requirements:
+    _permission: 'Nodes to json'

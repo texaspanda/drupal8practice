@@ -1,0 +1,5 @@
+name: 'fresh time!'
+type: module
+description: 'Show time, fresh nodes for logger users, cache the time for 1 hour'
+core: 8.x
+package: 'Custom'

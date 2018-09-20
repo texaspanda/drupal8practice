@@ -1,0 +1,279 @@
+<?php
+use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\node\Entity\Node;
+use Drupal\Core\Language;
+use Drupal\taxonomy\Entity\Term;
+
+    function time_watcher_form_user_register_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+      $form['#prefix'] = "<div class='i-am-wrapper'>";
+      $form['#suffix'] = "</div>";
+      $form['agree'] = [
+        '#type' => 'checkbox',
+        '#required' => TRUE,
+        '#title' => t('I\'m agree with super rulezz!'),
+        '#description' => t('Check box if you read our super-rules and agree to rules and regulations'),
+      ];
+
+      /**
+       * Check actions and use handler function if action is submit
+       */
+
+      foreach (array_keys($form['actions']) as $action) {
+        if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
+          $form['actions'][$action]['#submit'][] = 'time_watcher_user_register_submit_handler';
+        }
+      }
+    }
+
+    function time_watcher_user_register_submit_handler(&$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+      $values = $form_state->getValues();
+      Drupal::logger('time_watcher')->debug('Say hello to ' . $values['name'].'!'. ' User email is ' . $values['mail']);
+    }
+
+    function time_watcher_preprocess_page(&$vars) {
+
+      $executeTime = \Drupal\Component\Utility\Timer::read('execute') / 1000;
+
+      /**
+       * Check permissions and show execution time of page if it is allowed to role of current user
+       */
+
+      $userPermissionWatchTime = \Drupal::currentUser()
+        ->hasPermission('Watch generation time permissions');
+      drupal_set_message("Execute time: $executeTime seconds");
+
+      /**
+       * Attach library slick for use on frontpage carousel
+       */
+
+      if ($vars['is_front'] == TRUE) {
+        $greet = 'Hello! ITZ ALIIVE!';
+        $vars['page']['content']['#attached']['library'][] = 'time_watcher/slick';
+        $vars['#attached']['library'][] = 'time_watcher/try';
+        $vars['#attached']['drupalSettings']['time_watcher']['try']['var'] = $greet;
+
+      }
+      //      $currentDate = new DrupalDateTime('now');
+      //      $yesterdayDateTimestamp = $currentDate - 86400;
+      //      $yesterdayDate = date('Y-m-d', $yesterdayDateTimestamp);
+      //      var_dump($yesterdayDate);
+      //      $test = $currentDate->format(DATETIME_DATE_STORAGE_FORMAT);
+      $currentDateStamp = time();
+      $yesterdayDateStamp = strtotime('-1 day', $currentDateStamp);
+      $query = \Drupal::entityQuery('node');
+      $query->condition('created', $yesterdayDateStamp, '>=');
+      $result = $query->execute();
+      $nodes = \Drupal\node\Entity\Node::loadMultiple($result);
+      if ($nodes != NULL) {
+        echo '=========' . "<br>";
+        echo 'Nodes created last day:' . "<br>";
+        foreach ($nodes as $node) {
+          echo $node->title->value . "<br>";
+        }
+        echo '=================================' . "<br>";
+      }
+
+      if ((isset($vars['node'])) && ($vars['is_front'] == FALSE)) {
+//        dump($vars);
+        $currentNodeId = \Drupal::routeMatch()->getParameter('node')->id();
+        $currentNode = node_load("$currentNodeId");
+//        dump($currentNode);
+        $nodeType = $currentNode->getType();
+        if ($nodeType == "article") {
+          $terms = $currentNode->get('field_taxonomy')->getValue();
+//          dump($terms);
+          $termsId = [];
+          foreach ($terms as $term) {
+            $termsId[] = $term['target_id'];
+          }
+          $taxonomyTerms = \Drupal\taxonomy\Entity\Term::loadMultiple($termsId);
+          foreach ($taxonomyTerms as $taxonomyTerm) {
+            $taxonomyTermsUnsorted[] = $taxonomyTerm->get('name')->getValue();
+          }
+          if(isset($taxonomyTermsUnsorted)) {
+            $countTerms = count($taxonomyTermsUnsorted);
+          }
+//          dump($taxonomyTermsUnsorted);
+          $taxonomyTermsNames = [];
+          if(isset($taxonomyTermsUnsorted)) {
+            for ($i = 0; $i < $countTerms; $i++) {
+              $taxonomyTermsNames[] = $taxonomyTermsUnsorted[$i][0];
+            }
+
+            for ($c = 0; $c < $countTerms; $c++) {
+              $tax[] = $taxonomyTermsNames[$c];
+            }
+            sort($tax);
+            print_r($tax);
+          }
+
+        }
+
+      }
+      //      dump($vars);
+      //      $currentNodeId = \Drupal::routeMatch()->getParameter('node')->id();
+      //      $currentNode = node_load("$currentNodeId");
+      //      $nodeTitle = $currentNode->getTitle();
+      //      $queryNode = \Drupal::entityQuery('node');
+      //      $queryNode->condition('type','article');
+      //      $nodesId = $queryNode->execute();
+      //      xdebug_break();
+      /**
+       * ITS ALIVE AND WORK!
+       */
+      if (isset($vars['node'])) {
+        $currentUserRoles = \Drupal::currentUser()->getRoles();
+        $currentNodeId = \Drupal::routeMatch()->getParameter('node')->id();
+        $node = node_load("$currentNodeId");
+        if (in_array('administrator', $currentUserRoles)) {
+          if (isset($vars['node'])) {
+            $languages = $node->getTranslationLanguages();
+            echo 'Availaible translations for this node:' . "<br>";
+            foreach ($languages as $language) {
+              $translation = $language->getName();
+              echo $translation . "<br>";
+            }
+          }
+
+        }
+      }
+    }
+
+
+
+        /**
+         * END!
+         */
+
+
+
+//      dump($vars);
+//      if(isset($vars['node']) == true) {
+//        $languages = $node->getTranslationLanguages();
+//        echo 'Availaible translations for this node:'."<br>";
+//        $node = \Drupal::routeMatch()->getParameter('node');
+//
+//        foreach($languages as $language) {
+//            $link = $node->getTranslation($language)->url();
+//            dump($link);
+//            $translation = $language->getName();
+//            echo $translation."<br>";
+////            $transManager = Drupal::languageManager();
+////            $transLinks = $transManager->getLanguageSwitchLinks($language, 'shop.me/trans/en');
+////            var_dump($transLinks);
+//
+//          }
+//          if(array_key_exists('en',$languages)) {
+//            $node = $node->getTranslation("en");
+//            $link = $node->toLink();
+//            $url = $node->toUrl();
+//          }
+//          elseif (array_key_exists('ru',$languages)) {
+//            $node = $node->getTranslation("ru");
+//            $link = $node->toLink();
+//            $url = $node->toUrl();
+//          }
+////        $node = $node->getTranslation
+////          elseif(array_key_exists("ru",$languages)) {
+////            $translation = $language->getName();
+////            echo $translation."<br>";
+////            $transManager = Drupal::languageManager();
+////            $transLinks = $transManager->getLanguageSwitchLinks($language, 'shop.me/trans/ru');
+////            var_dump($transLinks);
+//          }
+////          getLanguageSwitchLinks
+//        }
+
+
+
+//        dump($nod);
+//        $translators = Node::load();
+//        dump($translators);
+//        $a = Node::addTranslation();
+//        $ar = $vars['node']['values']['langcode'];
+//        foreach ($ar as $item) {
+//          echo $item;
+//        }
+
+//        $doTrans = $translators::translate();
+//        dump($b);
+//        xdebug_break();
+
+
+
+
+//      $startDay  =  strtotime("today", REQUEST_TIME);
+//      $query = \Drupal::entityQuery('node');
+//      $nodes_id = $query->condition('created', $startDay, '>=')
+//        ->execute();
+//      $nodes = \Drupal::entityTypeManager()->getStorage('node')
+//        ->loadMultiple($nodes_id);
+//        echo($nodes);
+
+
+
+/*
+* Implements hook_user_login().
+ */
+function time_watcher_user_login($account) {
+  $userName = $account->getUsername();
+  $date = date('d-m-Y H:i:s ');
+  $siteEmail = \Drupal::config('system.site')->get('mail');
+  $mailManager = \Drupal::service('plugin.manager.mail');
+  $module = "time_watcher";
+  $key = "time_watcher_user_login";
+  $to = $siteEmail;
+  $params['message'] = "User $userName has been logged at $date";
+  $params['title'] = 'HALLO';
+  $langcode = \Drupal::currentUser()->getPreferredLangcode();
+  $send = true;
+  $result = $mailManager->mail($module, $key, $to, $langcode, $params, NULL, $send);
+  if ($result['result'] !== true) {
+    Drupal::logger('time_watcher')->debug("User $userName has been loggened. Letter was not sent to $to $date");
+  }
+  else {
+    Drupal::logger('time_watcher')->debug("User $userName has been loggened. Letter was sent to $to $date");
+  }
+}
+
+
+
+/*
+ * Implements hook_mail().
+ */
+function sendmodule_mail($key, &$message, $params) {
+  $options = [
+    'langcode' => $message['langcode'],
+  ];
+  switch ($key) {
+    case 'time_watcher_user_login':
+      $message['from'] = \Drupal::config('system.site')->get('mail');
+      $message['subject'] = t('Your mail subject Here: @title', array('@title' => $params['title']), $options);
+      $message['body'][] = Html::escape($params['message']);
+      break;
+  }
+}
+
+    function time_watcher_element_info_alter(&$types) {
+      if (isset($types['table'])) {
+        $types['table']['#attached']['library'][] = 'core/drupalSettings';
+      }
+    }
+
+//      if(isset($types['page'])) {
+//        $types['page']['#attached']['library'][] = 'time_watcher/test';
+//      }
+//      $markup = 'break here';
+//      xdebug_break();
+//
+//    }
+//
+//    function time_watcher_page_attachments(&$attachments) {
+//        $attachments['#attached']['library'][] = 'time_watcher/test';
+//
+//    }
+
+//    function time_watcher_preprocess_html(&$variables) {
+//      $settings = \Drupal\Core\Site\Settings::getAll();
+//        $markBreakpoint = [];
+//    }

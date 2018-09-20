@@ -1,0 +1,3 @@
+services:
+  nodes_to_json.jsonExp:
+    class: Drupal\nodes_to_json\Services\JsonExp

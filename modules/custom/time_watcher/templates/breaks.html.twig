@@ -1,0 +1,36 @@
+{# if top region is set and have content #}
+    {% if content.top %}
+        <div class="watcher-top">
+            {{ content.top }}
+        </div>
+    {% endif %}
+
+{# if 'right' and 'left' regions are enabled, template will make bricks-style display #}
+    {% if content.left and content.right %}
+        <div class="watcher-left">
+            {{ content.left }}
+        </div>
+        <div class="watcher-right">
+            {{ content.right }}
+        </div>
+    {% endif %}
+
+{# if just one of the regions had content (only right or left)
+create a new div class "watcher-middle"
+with just one of the regions #}
+    {% if content.left and content.right == false %}
+        <div class="watcher-middle">
+            {{ content.left }}
+        </div>
+    {% elseif content.right and content.left == false %}
+        <div class="watcher-middle">
+            {{ content.right }}
+        </div>
+    {% endif %}
+
+{# if bottom region set and have content #}
+    {% if content.bottom %}
+        <div class="watcher-bottom">
+            {{ content.bottom }}
+        </div>
+    {% endif %}

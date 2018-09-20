@@ -1,0 +1,17 @@
+breaks-custom:
+  css:
+    theme:
+      css/time-watcher.css: {}
+slick:
+  css:
+    theme:
+      css/slick.css: {}
+      css/slick-theme.css: {}
+  js:
+    js/slick.js: {}
+    js/test.js: {}
+  dependencies:
+    - core/jquery
+try:
+  js:
+    js/try.js: {}

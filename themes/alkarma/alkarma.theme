@@ -1,0 +1,5 @@
+<?php
+function alkarma_preprocess_node(&$vars){
+    $node = $vars['node'];
+//    dump($node);
+}

@@ -1,0 +1,5 @@
+mylibrary:
+  css:
+    theme:
+      css/bootstrap.css: {}
+      css/custom.css: {}

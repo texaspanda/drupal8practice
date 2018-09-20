@@ -1,0 +1,9 @@
+services:
+  fresh_time.nodes:
+    class: Drupal\fresh_time\Services\NodesList
+  fresh_time.today:
+    class: Drupal\fresh_time\Services\WhatDay
+  fresh_time.similar_content:
+    class: Drupal\fresh_time\Services\FindSimilarContent
+   # arguments: ['@entity.query'] - Services\FindSimilarContent::__construct() must be an instance of Drupal\Core\Config\Entity\Query\QueryFactory, instance of Drupal\Core\Entity\Query\QueryFactory given
+  # https://api.drupal.org/api/drupal/services

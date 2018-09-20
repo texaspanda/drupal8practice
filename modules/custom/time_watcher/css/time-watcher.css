@@ -1,0 +1,20 @@
+.watcher-top {
+}
+
+.watcher-left {
+  width: 50%;
+  float: left;
+  display: inline-block;
+}
+
+.watcher-right {
+  width: 50%;
+  float: left;
+  display: inline-block;
+}
+
+.watcher-bottom {
+}
+
+.watcher-middle {
+}

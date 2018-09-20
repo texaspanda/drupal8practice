@@ -1,0 +1,1 @@
+alert(drupalSettings.time_watcher.try.var)
