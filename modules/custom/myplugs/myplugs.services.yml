@@ -1,0 +1,3 @@
+services:
+  myplugs.users_list:
+    class: Drupal\myplugs\Services\ActiveUsers

@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Contains form_module.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function form_module_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the form_module module.
+    case 'help.page.form_module':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Form example') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function form_module_theme() {
+  return [
+    'form_module' => [
+      'render element' => 'children',
+    ],
+  ];
+}

@@ -1,0 +1,6 @@
+form-library:
+  js:
+    js/formcheck.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings

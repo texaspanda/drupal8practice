@@ -1,0 +1,5 @@
+name: 'form_module'
+type: module
+description: 'Form example'
+core: 8.x
+package: 'Custom'

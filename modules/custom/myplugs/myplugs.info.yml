@@ -1,0 +1,7 @@
+name: 'myplugs'
+type: module
+description: 'My plugins'
+core: 8.x
+package: 'Custom'
+dependencies:
+  - field

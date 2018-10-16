@@ -20,3 +20,17 @@ fresh_time.comments:
     _title: 'Comments'
   requirements:
     _permission: 'access content'
+fresh_time.stat.form:
+  path: 'stat'
+  defaults:
+    _form: '\Drupal\fresh_time\Form\StatForm'
+    _title: 'Super form'
+  requirements:
+    _permission: 'access content'
+fresh_time.multistep.stat.form:
+  path: 'stat/2'
+  defaults:
+    _form: '\Drupal\fresh_time\Form\StatForm\MultistepForm'
+    _title: 'Second step'
+  requirements:
+    _permission: 'access content'

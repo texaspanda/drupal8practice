@@ -3,6 +3,8 @@ use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\node\Entity\Node;
 use Drupal\Core\Language;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\Component\Utility\Html;
+
 
     function time_watcher_form_user_register_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
       $form['#prefix'] = "<div class='i-am-wrapper'>";
@@ -74,14 +76,11 @@ use Drupal\taxonomy\Entity\Term;
       }
 
       if ((isset($vars['node'])) && ($vars['is_front'] == FALSE)) {
-//        dump($vars);
         $currentNodeId = \Drupal::routeMatch()->getParameter('node')->id();
         $currentNode = node_load("$currentNodeId");
-//        dump($currentNode);
         $nodeType = $currentNode->getType();
         if ($nodeType == "article") {
           $terms = $currentNode->get('field_taxonomy')->getValue();
-//          dump($terms);
           $termsId = [];
           foreach ($terms as $term) {
             $termsId[] = $term['target_id'];
@@ -93,7 +92,6 @@ use Drupal\taxonomy\Entity\Term;
           if(isset($taxonomyTermsUnsorted)) {
             $countTerms = count($taxonomyTermsUnsorted);
           }
-//          dump($taxonomyTermsUnsorted);
           $taxonomyTermsNames = [];
           if(isset($taxonomyTermsUnsorted)) {
             for ($i = 0; $i < $countTerms; $i++) {
@@ -238,10 +236,10 @@ function time_watcher_user_login($account) {
 
 
 
-/*
+/**
  * Implements hook_mail().
  */
-function sendmodule_mail($key, &$message, $params) {
+function time_watcher_mail($key, &$message, $params) {
   $options = [
     'langcode' => $message['langcode'],
   ];

@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains mimiparagraphs.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function mimiparagraphs_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the mimiparagraphs module.
+    case 'help.page.mimiparagraphs':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Mi mi mi paragraphs') . '</p>';
+      return $output;
+
+    default:
+  }
+}
