@@ -26,7 +26,20 @@ class StatForm extends FormBase {
       '#required' => TRUE,
       '#default_value' => $form_state->getValue('user_name', 'Alex'),
     ];
-
+      $form['user_name'] = [
+          '#type' => 'textfield',
+          '#title' => $this->t('Name'),
+          '#placeholder' => 'Enter your name',
+          '#required' => TRUE,
+          '#default_value' => $form_state->getValue('user_name', 'Alex'),
+      ];
+      $form['user_name'] = [
+          '#type' => 'textfield',
+          '#title' => $this->t('Name'),
+          '#placeholder' => 'Enter your name',
+          '#required' => TRUE,
+          '#default_value' => $form_state->getValue('user_name', 'Alex'),
+      ];
     $form['profession'] = [
       '#type' => 'radios',
       '#title' => $this->t('Profession'),
