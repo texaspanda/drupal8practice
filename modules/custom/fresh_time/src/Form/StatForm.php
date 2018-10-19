@@ -22,7 +22,7 @@ class StatForm extends FormBase {
     $form['user_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Name'),
-      '#placeholder' => 'Enter your name',
+      '#placeholder' => 'Enter your , please',
       '#required' => TRUE,
       '#default_value' => $form_state->getValue('user_name', 'Alex'),
     ];
